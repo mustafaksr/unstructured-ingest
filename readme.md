@@ -1,4 +1,4 @@
-# unstructured-data-convert-with-docai demo google cloud case-study project
+# unstructured-data-convert-with-docai demo google cloud case-study
 
 This demo project is about automatically converting unstructured pdf files uploaded to cloud storage into structured form with cloud function and docai.
 

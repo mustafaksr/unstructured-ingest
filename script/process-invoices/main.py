@@ -18,8 +18,8 @@ timeout = int(os.environ.get('TIMEOUT'))
 # An array of Future objects: environvery call to publish() returns an instance of Future
 
 # Setting variables
-gcs_output_uri = f"gs://bucket-output"
-gcs_archive_bucket_name = f"bucket-archive"
+gcs_output_uri = f"gs://{project_id}-input-bucket"
+gcs_archive_bucket_name = f"{project_id}-archive"
 destination_uri = f"{gcs_output_uri}/{gcs_output_uri_prefix}/"
 name = f"projects/{project_id}/locations/{location}/processors/{processor_id}"
 dataset_name = 'invoice_results'
@@ -33,6 +33,8 @@ bq_schema={
     "seller":"STRING", 
     "client":"STRING", 
     "total_net_worth":"STRING",
+    "vat":"STRING",
+    "vat_rate":"STRING",
     "total_gross_worth":"STRING"
 }
 bq_load_schema=[]
@@ -123,7 +125,7 @@ def process_invoice(event, context):
                 print('Fetching from ' + blob.name)
                 start = blob.name.rfind("/") + 1
                 end = blob.name.rfind(".") + 1           
-                input_filename = blob.name[start:end:] + 'gif'
+                input_filename = blob.name[start:end:] + 'pdf'
                 print('input_filename ' + input_filename)
       
                 # Getting ready to read the output of the parsed document - setting up "document"
@@ -137,20 +139,26 @@ def process_invoice(event, context):
                     for form_field in page.form_fields:  
                         field_name = get_text(form_field.field_name,document)
                         field_value = get_text(form_field.field_value,document)
-                        if field_name.strip().lower() == 'date:':
+                        if field_name.strip().lower() == 'date of issue:':
                             entities_extracted_dict['date'] = field_value
                         if field_name.strip().lower() == 'invoice no:':
                             entities_extracted_dict['invoice_no'] = field_value
                         if field_name.strip().lower() == 'seller:':
                             entities_extracted_dict['seller'] = field_value
+                        if field_name.strip() == 'IBAN:':
+                            entities_extracted_dict['iban'] = field_value
                         if field_name.strip().lower() == 'client:':
                             entities_extracted_dict['client'] = field_value
-                        if field_name.strip().lower() == 'total net worth':
+                        if field_name.strip().lower() == 'net worth':
                             entities_extracted_dict['total_net_worth'] = field_value
-                        if field_name.strip().lower() == 'total gross worth':
+                        if field_name.strip() == 'VAT [%]':
+                            entities_extracted_dict['vat_rate'] = field_value
+                        if field_name.strip() == 'VAT':
+                            entities_extracted_dict['vat'] = field_value
+                        if field_name.strip().lower() == 'gross worth':
                             entities_extracted_dict['total_gross_worth'] = field_value
 
-                      
+                     
                 print(entities_extracted_dict)
                 print('Writing to BQ')
                 #Write the entities to BQ

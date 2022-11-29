@@ -21,12 +21,27 @@
   },
   {
     "mode": "NULLABLE",
+    "name": "iban",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
     "name": "client",
     "type": "STRING"
   },
   {
     "mode": "NULLABLE",
     "name": "total_net_worth",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "vat",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "vat_rate",
     "type": "STRING"
   },
   {
