@@ -15,6 +15,7 @@ export bucket-input=$project_id-input-bucket
 export bucket-output=$project_id-output-bucket
 gsutil mb gs://bucket-input
 gsutil mb gs://bucket-output
+gsutil mb gs://bucket-archive
 
 #make biqquery dataset and table for results
 bq --location=US mk  -d \
@@ -24,7 +25,7 @@ cd ~/unstructured-ingest/table-schema
 bq mk --table \
     invoice_results.extracted_entities \
     entities_schema.json
-    
+
 # create doc ai form parser
 ## Document AI - Overview
 ## Explore processor select form parser
