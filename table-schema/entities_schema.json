@@ -1,0 +1,38 @@
+[
+ {
+    "mode": "NULLABLE",
+    "name": "file_name",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "invoice_no",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "date",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "seller",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "client",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "total_net_worth",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "total_gross_worth",
+    "type": "STRING"
+  }
+
+]
