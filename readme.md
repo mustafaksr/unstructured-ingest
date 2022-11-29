@@ -8,3 +8,5 @@ Note: For the invoice files, the pdf files located at the [dataset](https://data
 2.  Converting unstructured files into structured form with doc ai and cloud functions.
 3.  Store structured data in Bigquery.
 4.  Additional steps
+
+Note: This case study was inspired by qwiklab's [Automate Data Capture at Scale with Document AI: Challenge Lab](https://www.cloudskillsboost.google/focuses/34185?parent=catalog).  

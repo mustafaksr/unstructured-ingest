@@ -33,14 +33,14 @@ bq mk --table \
 ## copy parser processor id
 
 #create cloud functions
-cd ~/unstructured-ingest/script
+
 export region=us-west1
 export processor_id=[your-docai-processor-id]
 
-
+cd ~/unstructured-ingest/script
 cat > process-invoices/.env.yaml <<EOF
-PARSER_LOCATION: us
-PROCESSOR_ID: f4a1f33332263cb
+PARSER_LOCATION: [your-parser-location]
+PROCESSOR_ID: [your-parser-id]
 TIMEOUT: "300"
 GCS_OUTPUT_URI_PREFIX: "processed"
 EOF
@@ -56,8 +56,16 @@ gcloud functions deploy process-invoices \
     --env-vars-file=process-invoices/.env.yaml \
     --trigger-resource=gs://$project_id-input-bucket\
     --trigger-event=google.storage.object.finalize
-   
+#note: if functions give error like "Please, give owner permissions to the editor role of the bucket and try again."
+# You can try:
+# Reset this service account to the default role.
+# or
+# Grant the runtime service account the cloudfunctions.serviceAgent role.
+# or
+# Grant the runtime service account the storage.buckets.{get, update} and the resourcemanager.projects.get permissions.
+#https://cloud.google.com/functions/docs/troubleshooting
 
+#copying files to input bucket
 gsutil cp ~/unstructured-ingest/sample-invoice-files/* gs://$project_id-input-bucket/
 
-gsutil cp ~/unstructured-ingest/sample-invoice-files/* gs://$project_id-input-bucket/
+#for output check cloud function logs and bigquery.
